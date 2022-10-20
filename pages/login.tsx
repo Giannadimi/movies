@@ -27,10 +27,10 @@ export default function LoggedIn(props: State) {
 
   const loginValidation = (values: any, errors: any) => {
     if (!values.email) {
-      errors.email = "Email is required!";
+      errors.email = "Email is required.";
     }
     if (!values.password) {
-      errors.password = "Password is required!";
+      errors.password = "Password is required.";
     }
     return errors;
   };
@@ -90,7 +90,7 @@ export default function LoggedIn(props: State) {
             alignItems: "center",
             flexDirection: "column",
             padding: "25px",
-            borderRadius: "12px",
+            borderRadius: "10px",
             backgroundColor: "#F1F1F1",
           }}
         >
@@ -99,12 +99,12 @@ export default function LoggedIn(props: State) {
           </Typography>
           <TextField
             id="email"
-            variant="standard"
+            variant="outlined"
             label="Email Adress"
             autoComplete="off"
             value={values.email}
             onChange={(e) => setValues({ ...values, email: e.target.value })}
-            sx={{ mt: 1 }}
+            sx={{ mt: 1, width: 300 }}
           />
           {errors.email && (
             <Box mt={0.8}>
@@ -113,12 +113,12 @@ export default function LoggedIn(props: State) {
           )}
           <TextField
             id="password"
-            variant="standard"
+            variant="outlined"
             label="Password"
             type="password"
             value={values.password}
             onChange={(e) => setValues({ ...values, password: e.target.value })}
-            sx={{ mt: 1 }}
+            sx={{ mt: 1.5, width: 300 }}
           />
           {errors.password && (
             <Box mt={0.8}>
@@ -126,19 +126,23 @@ export default function LoggedIn(props: State) {
             </Box>
           )}
           <Button
-            sx={{ mt: 1 }}
+            sx={{ mt: 1.5, width: 300 }}
             variant="contained"
             color="primary"
             onClick={handleLogin}
           >
-            Sign In
+            Log In
           </Button>
           {serverErrors && (
             <Box mt={0.8}>
               <Alert severity="error">{serverErrors}</Alert>
             </Box>
           )}
-          <Typography variant="subtitle2" gutterBottom sx={{ color: "black" }}>
+          <Typography
+            variant="subtitle2"
+            gutterBottom
+            sx={{ color: "black", mt: 1 }}
+          >
             Don't have an account?
             <Button onClick={handleClick}>Sign Up</Button>
           </Typography>

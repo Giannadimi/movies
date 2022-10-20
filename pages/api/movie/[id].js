@@ -1,4 +1,4 @@
-import {deleteMovieById, getMovieById} from "../../../lib/dao"
+import {deleteMovieById, editMovieById, getMovieById} from "../../../lib/dao"
 
 export default async function handler(req, res) {
 
@@ -15,28 +15,30 @@ export default async function handler(req, res) {
     }
     
     if (req.method === 'DELETE') {
-      const successDel = deleteMovieById(id);
+      const successDel = await deleteMovieById(id);
       if (successDel){
       res.status(200).json({ message: "Success Delete!"})
       } else {
         res.status(400).json({ message: "Not Success Delete!"})
       }
     }
-      
-    // if (req.method === 'PUT') {
-    //   const statement = await db.prepare('UPDATE movie set name_movie=?, description=?, rating=?, date_created=?, photo_url=? where id=?');
-      
-    //   const result = await statement.run(
-    //     req.body.name_movies, 
-    //     req.body.description,
-    //     req.body.rating, 
-    //     req.body.date_created,
-    //     req.body.photo_url,
-    //     req.query.id
-    //     );
-    //  result.finalize();
-    // }
+    
+    if (req.method === 'PUT') {
+      const {name_movie, description, rating, date_created, photo_url} = req.body;
+      console.log(req.body);
+      console.log(name_movie, description, rating, date_created, photo_url)
+      const movieUpdate = await editMovieById(id, name_movie, description, rating, date_created, photo_url);
+      console.log(movieUpdate);
 
+      if (movieUpdate){
+      res.status(200).json({message: "Success Edit!"})
+      } else {
+      res.status(400).json({message: "Not Success Edit!"})
+
+      }
+    }
+  
   }
+  
 
   

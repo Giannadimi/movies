@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import AddIcon from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
 import { useRouter } from "next/router";
 import {
   Box,
@@ -10,12 +12,14 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  CircularProgress,
   IconButton,
   Rating,
   Typography,
   Tooltip,
 } from "@mui/material";
 import _ from "lodash";
+import moment from "moment";
 
 interface IRow {
   id: number;
@@ -31,6 +35,7 @@ function Movie() {
   const [data, setData] = useState([]);
   const [showOnClick, setshowOnClick] = useState(false);
   const [selectedId, setSelectedId] = useState<number>();
+  const [isloading, setIsloading] = useState(true);
 
   const getData = async () => {
     try {
@@ -53,15 +58,28 @@ function Movie() {
 
   return (
     <>
-      <Box sx={{ MaxWidth: "100%", heigth: "100vh", bgcolor: "white" }}>
-        <Box
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          MaxWidth: "100%",
+          heigth: "100vh",
+          padding: "100px",
+          flexDirection: "row",
+          alignItems: "center",
+          wrap: "nowrap",
+          bgcolor: "white",
+        }}
+      >
+        <Grid
+          container
+          spacing={2}
+          justifyContent="center"
+          alignItems="stretch"
+          // key={id}
           sx={{
-            display: "flex",
-            justifyContent: "center",
+            height: "200",
             MaxWidth: "100%",
-            padding: "50px",
-            flexDirection: "row",
-            alignItems: "center",
           }}
         >
           {_.map(data, (row: IRow) => {
@@ -74,92 +92,77 @@ function Movie() {
               rating,
             } = row;
             return (
-              <Grid
-                container
-                spacing={2}
-                justifyContent="center"
-                // alignItems="stretch"
-                key={id}
-                sx={{
-                  height: "200",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Grid item xs={12}>
-                  <Card sx={{ m: 1, minWidth: 292 }}>
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      src={photo_url}
-                    ></CardMedia>
-                    <CardContent
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <Typography gutterBottom variant="h5" component="div">
-                        {name_movie}
-                      </Typography>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {date_created}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        <Rating
-                          name="read-only"
-                          value={rating}
-                          readOnly
-                          size="small"
-                        />
-                      </Typography>
-                    </CardContent>
-                    <CardActions
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <Typography>
-                        {showOnClick && id === selectedId && description}{" "}
-                      </Typography>
-                      <Button
+              <Grid item md={4}>
+                <Card sx={{ m: 1, minWidth: 292 }}>
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    src={photo_url}
+                  ></CardMedia>
+                  <CardContent
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography gutterBottom variant="h5" component="div">
+                      {name_movie}
+                    </Typography>
+                    <Typography gutterBottom variant="body2" component="div">
+                      Release Date: {moment(date_created).format("DD/MM/YYYY")}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      <Rating
+                        name="read-only"
+                        value={rating}
+                        readOnly
                         size="small"
-                        // variant="contained"
-                        onClick={() => {
-                          setSelectedId(id);
-                          console.log(id);
-                          router.push(`/movies/${id}`);
-                        }}
-                        sx={{ color: "black", bgcolor: "white" }}
-                      >
-                        {/* {showOnClick ? "Hide Description" : "Show Description"} */}
-                        More Details
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
+                      />
+                    </Typography>
+                  </CardContent>
+                  <CardActions
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography>
+                      {showOnClick && id === selectedId && description}{" "}
+                    </Typography>
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        setSelectedId(id);
+                        console.log(id);
+                        router.push(`/movies/${id}`);
+                      }}
+                      sx={{ color: "black", bgcolor: "white" }}
+                    >
+                      More Details
+                    </Button>
+                  </CardActions>
+                </Card>
               </Grid>
             );
           })}
-        </Box>
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <Tooltip title="Add Movie">
-            <IconButton
-              size="large"
-              aria-label="add"
-              aria-haspopup="true"
-              color="inherit"
-              onClick={addClick}
-            >
-              +
-            </IconButton>
-          </Tooltip>
-        </Box>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          mt: 4,
+        }}
+      >
+        <Tooltip title="Add Movie">
+          <Fab color="primary" aria-label="add">
+            <AddIcon onClick={addClick} />
+          </Fab>
+        </Tooltip>
       </Box>
     </>
   );

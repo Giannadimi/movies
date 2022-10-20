@@ -55,4 +55,18 @@ export const addNewMovie = async(name_movie: string, description: string, rating
         }    
 }
 
-    
+export const editMovieById = async(id: number, name_movie: string, description: string, rating: number, date_created: Date, photo_url: string) => {
+    const client = await pool.connect();
+    console.log(name_movie, description, date_created, rating, photo_url, id)
+    try {
+        const editMovie = await client.query('UPDATE movie SET name_movie = $1, description = $2, date_created= $3, rating= $4, photo_url= $5 WHERE id=$6 returning *',[name_movie, description, date_created, rating, photo_url, id]);
+        console.log(editMovie?.rows[0]);
+        return editMovie?.rows[0];
+        } catch (error) {
+        console.error(error);
+        } finally {
+        client.release();
+        }    
+}
+
+      

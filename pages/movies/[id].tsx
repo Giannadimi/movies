@@ -20,6 +20,9 @@ import { Box } from "@mui/system";
 import styled from "@emotion/styled";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import Fab from "@mui/material/Fab";
+import moment from "moment";
+import BackButton from "../../src/components/Button/BackButton";
 
 interface IMovies {
   id: number;
@@ -76,16 +79,6 @@ export default function CardDetails() {
     }
   };
 
-  // const editDescription = async (id: any) => {
-  //   try {
-  //     const resp = await axios.put(`http://localhost:3000/api/movie/${id}`);
-  //     if (resp.status == 200) {
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   useEffect(() => {
     if (id) {
       getData(id);
@@ -94,12 +87,19 @@ export default function CardDetails() {
 
   return (
     <div>
+      <Box mt={9}>
+        <BackButton
+          onClick={() => {
+            router.push("/movies");
+          }}
+        />
+      </Box>
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
           width: "100%",
-          padding: "50px",
+          padding: "40px",
           flexDirection: "row",
           alignItems: "center",
         }}
@@ -122,17 +122,21 @@ export default function CardDetails() {
           >
             <Grid container spacing={2}>
               <Grid item>
-                <ButtonBase sx={{ width: 128, height: 128 }}>
+                <ButtonBase sx={{ width: 400, height: 200 }}>
                   <Img alt="complex" src={data?.photo_url} />
                 </ButtonBase>
               </Grid>
               <Grid item xs={12} sm container>
                 <Grid item xs container direction="column" spacing={2}>
                   <Grid item xs>
-                    <Typography gutterBottom variant="subtitle1">
+                    <Typography gutterBottom variant="h5">
                       {data?.name_movie}
                     </Typography>
-                    <Typography variant="body2" gutterBottom>
+                    <Typography gutterBottom variant="body1" component="div">
+                      Release Date:{" "}
+                      {moment(data?.date_created).format("DD/MM/YYYY")}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
                       <StarIcon
                         style={{ opacity: 0.55 }}
                         fontSize="inherit"
@@ -140,7 +144,7 @@ export default function CardDetails() {
                       />
                       {data?.rating || 0}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body1" color="text.secondary">
                       {data?.description}
                     </Typography>
                   </Grid>
@@ -152,7 +156,11 @@ export default function CardDetails() {
                           display="block"
                           gutterBottom
                         ></Typography>
-                        <EditIcon />
+                        <Fab size="small" color="secondary" aria-label="edit">
+                          <EditIcon
+                            onClick={() => router.push(`edit/${data.id}`)}
+                          />
+                        </Fab>
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
@@ -160,7 +168,9 @@ export default function CardDetails() {
                         sx={{ mr: 2 }}
                         onClick={() => removeMovie(data.id)}
                       >
-                        <DeleteIcon />
+                        <Fab size="small" color="primary" aria-label="add">
+                          <DeleteIcon />
+                        </Fab>
                       </IconButton>
                     </Tooltip>
                   </Grid>

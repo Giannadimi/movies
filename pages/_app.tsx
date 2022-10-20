@@ -1,8 +1,6 @@
 import "../styles/globals.css";
 import Header from "../src/components/Header";
-import { CacheProvider, EmotionCache } from "@emotion/react";
 import Head from "next/head";
-import { AppProps } from "next/app";
 import { Box } from "@mui/system";
 
 function MyApp(props: any) {

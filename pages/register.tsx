@@ -38,20 +38,20 @@ export default function SignUp() {
 
   const validation = (values: any, errors: any) => {
     if (!values.username) {
-      errors.username = "Username is required!";
+      errors.username = "Username is required.";
     }
     if (!values.email) {
-      errors.email = "Email is required!";
+      errors.email = "Email is required.";
     }
     if (!Regex.test(values.email)) {
-      errors.email = "Please enter a valid email!";
+      errors.email = "Please enter a valid email.";
     }
     if (!values.password) {
-      errors.password = "Password is required!";
+      errors.password = "Password is required.";
     }
     if (!passRegex.test(values.password)) {
       errors.password =
-        "Password must be more than 8 characters and at least 1 must be digit!";
+        "Password must be more than 8 characters and at least 1 must be digit.";
     }
     return errors;
   };
@@ -76,8 +76,6 @@ export default function SignUp() {
 
   const handleSubmit = () => {
     let errors = { username: "", email: "", password: "" };
-    console.log(values);
-    console.log(errors);
     const a = validation(values, errors);
     setErrors(a);
     if (!a.username && !a.password && !a.email) {
@@ -111,24 +109,24 @@ export default function SignUp() {
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
-              borderRadius: "12px",
+              borderRadius: "10px",
               backgroundColor: "#F1F1F1",
             }}
           >
             <Typography variant="h4" gutterBottom color="black">
               Sign Up
             </Typography>
-
             <TextField
               id="username"
               label="Username"
-              variant="standard"
+              variant="outlined"
               color="success"
               autoComplete="off"
               value={values.username}
               onChange={(e) =>
                 setValues({ ...values, username: e.target.value })
               }
+              sx={{ mt: 1, width: 300 }}
             />
             {errors.username && (
               <Box mt={0.8}>
@@ -138,11 +136,12 @@ export default function SignUp() {
             <TextField
               id="email"
               label="Email Adress"
-              variant="standard"
+              variant="outlined"
               color="success"
               autoComplete="off"
               value={values.email}
               onChange={(e) => setValues({ ...values, email: e.target.value })}
+              sx={{ mt: 1.5, width: 300 }}
             />
             {errors.email && (
               <Box mt={0.8}>
@@ -152,13 +151,14 @@ export default function SignUp() {
             <TextField
               id="password"
               label="Password"
-              variant="standard"
+              variant="outlined"
               color="success"
               type="password"
               value={values.password}
               onChange={(e) =>
                 setValues({ ...values, password: e.target.value })
               }
+              sx={{ mt: 1.5, width: 300 }}
             />
             {errors.password && (
               <Box mt={0.8}>
@@ -168,7 +168,7 @@ export default function SignUp() {
             <Button
               variant="contained"
               color="success"
-              sx={{ m: 1 }}
+              sx={{ m: 1.5 }}
               onClick={handleSubmit}
             >
               Create an account
@@ -181,7 +181,7 @@ export default function SignUp() {
             <Typography
               variant="subtitle2"
               gutterBottom
-              sx={{ color: "black" }}
+              sx={{ color: "black", mt: 1 }}
             >
               Already have an account?
               <Button onClick={handleClick}>Login</Button>

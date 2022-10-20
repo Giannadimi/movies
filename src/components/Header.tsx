@@ -18,6 +18,7 @@ import {
 import ListItemIcon from "@mui/material/ListItemIcon";
 import HomeIcon from "@mui/icons-material/Home";
 import Logout from "@mui/icons-material/Logout";
+import MovieCreationIcon from "@mui/icons-material/MovieCreation";
 import Router from "next/router";
 
 function Header() {
@@ -48,11 +49,11 @@ function Header() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <AppBar position="static" color="primary" sx={{ maxWidth: "100%" }}>
+      <AppBar position="fixed">
         <Toolbar>
           <Tooltip title="Home">
             <IconButton onClick={addClick} sx={{ mr: 1 }}>
-              <HomeIcon fontSize="large" />
+              <MovieCreationIcon fontSize="large" />
             </IconButton>
           </Tooltip>
           <Typography
@@ -66,7 +67,7 @@ function Header() {
               mr: 1,
             }}
           >
-            Movies
+            {/* Movies */}
           </Typography>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Profile">
