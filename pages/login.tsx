@@ -13,6 +13,11 @@ interface State {
   password: string;
 }
 
+
+// COMMENT: 
+// Αφού περνάς props σε Page Component συμενει πως τα props αυτά έρχονται απο το get server side props.
+// Στο login page βλέπω δεν έχεις getserversideprops αρα δεν χρειάζεται props.
+
 export default function LoggedIn(props: State) {
   const { email, password } = props;
 
@@ -97,6 +102,11 @@ export default function LoggedIn(props: State) {
           <Typography variant="h4" gutterBottom color={"black"}>
             Login
           </Typography>
+
+          {/* TODO: Βλέπω Χρησημοποιείς μια σειρά των ζευγών TextField μαζί με errors.email etc..
+                    άρα μπορείς να το κάνεις ένα δικό σου component και μετά με array.map να rendareis τα components
+                    Με αυτό τον τρόπο θα κάνεις τον κώδικα πιο επεκτάσιμο και συντηρίσμο
+          */}
           <TextField
             id="email"
             variant="outlined"

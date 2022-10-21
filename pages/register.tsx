@@ -14,7 +14,7 @@ interface IForm {
   password: string;
 }
 
-interface IErrors extends IForm {}
+interface IErrors extends IForm { }
 
 export default function SignUp() {
   const router = useRouter();
@@ -36,6 +36,7 @@ export default function SignUp() {
   );
   const passRegex = RegExp(/^(?=.*\d).{8,}$/);
 
+  // TODO: passwordValidation
   const validation = (values: any, errors: any) => {
     if (!values.username) {
       errors.username = "Username is required.";
@@ -116,6 +117,13 @@ export default function SignUp() {
             <Typography variant="h4" gutterBottom color="black">
               Sign Up
             </Typography>
+<<<<<<< HEAD
+            {/* TODO: Βλέπω Χρησημοποιείς μια σειρά των ζευγών TextField μαζί με errors.email etc..
+                    άρα μπορείς να το κάνεις ένα δικό σου component και μετά με array.map να rendareis τα components
+                    Με αυτό τον τρόπο θα κάνεις τον κώδικα πιο επεκτάσιμο και συντηρίσμο
+          */}
+=======
+>>>>>>> 281f5a389cdbb01749513de457ac956d48c8a304
             <TextField
               id="username"
               label="Username"

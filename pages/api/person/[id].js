@@ -3,6 +3,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const res = await client.query('SELECT * FROM person WHERE id=$1', [id]);
       console.log(res.rows.id)
+      
     }
        
     if (req.method === 'PUT') {
