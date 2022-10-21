@@ -3,7 +3,7 @@ import { sign } from 'jsonwebtoken';
 import { compare } from 'bcrypt';
 const bcrypt = require('bcrypt');
 
-
+// TODO: CTRL + ALT + F για να κάνεις auto format τον κώδικα
 export default async function login(req, res) {
     
   if (req.method === 'POST') {
