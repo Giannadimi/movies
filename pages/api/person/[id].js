@@ -1,23 +1,29 @@
+import { addUser, getUser } from "../../../lib/dao";
+
 export default async function handler(req, res) {
+
     const { id } = req.query;
     if (req.method === 'GET') {
-      const res = await client.query('SELECT * FROM person WHERE id=$1', [id]);
-      console.log(res.rows.id)
-      
-    }
+        try {
+          const res = await getUser(id);
+          res.status(200).json(res)
+        } catch {
+          res.status(401).json({ message: "User not found!"})
+        }
+  
+      }
        
     if (req.method === 'PUT') {
-      const statement = await db.prepare('UPDATE person set username=?, email=?, where id=?');
-      
-      const result = await statement.run(
-        req.body.username, 
-        req.body.email,
-        req.body.password, 
-        req.query.id
-        );
-     result.finalize();
+      try{
+        const {id, username, email, password} = req.body;
+        // console.log(req.body);
+        const personAdded = await addUser(id, username, email, password);
+        console.log(personAdded);
+      res.status(200).json({message: "Success Register!"})
+      } catch {
+        res.status(400).json({message: "Not Success Register!"})
+      }
     }
 
-    res.status(200).json({ message })
   }
   

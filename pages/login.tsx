@@ -8,19 +8,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { Alert } from "@mui/material";
 
-interface State {
-  email: string;
-  password: string;
-}
-
-
-// COMMENT: 
-// Αφού περνάς props σε Page Component συμενει πως τα props αυτά έρχονται απο το get server side props.
-// Στο login page βλέπω δεν έχεις getserversideprops αρα δεν χρειάζεται props.
-
-export default function LoggedIn(props: State) {
-  const { email, password } = props;
-
+export default function LoggedIn() {
   const router = useRouter();
   const [values, setValues] = useState({
     email: "",

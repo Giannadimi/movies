@@ -23,19 +23,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import Fab from "@mui/material/Fab";
 import moment from "moment";
 import BackButton from "../../src/components/Button/BackButton";
-
-interface IMovies {
-  id: number;
-  name_movie: string;
-  description: string;
-  rating?: number | null;
-  photo_url: string;
-  date_created?: Date | null;
-}
+import { IRow } from "../types";
 
 export default function CardDetails() {
   const router = useRouter();
-  const [data, setData] = useState<IMovies | null>();
+  const [data, setData] = useState<IRow | null>();
   const [open, setOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
 
@@ -51,7 +43,7 @@ export default function CardDetails() {
     maxHeight: "100%",
   });
 
-  const getData = async (id: any) => {
+  const getData = async (id: number) => {
     try {
       console.log(id);
       setIsloading(true);
@@ -65,7 +57,7 @@ export default function CardDetails() {
     }
   };
 
-  const removeMovie = async (id: any) => {
+  const removeMovie = async (id: number) => {
     try {
       const resp = await axios.delete(`http://localhost:3000/api/movie/${id}`);
       if (resp.status == 200) {

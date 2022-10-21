@@ -20,15 +20,7 @@ import {
 } from "@mui/material";
 import _ from "lodash";
 import moment from "moment";
-
-interface IRow {
-  id: number;
-  name_movie: string;
-  description: string;
-  rating?: number | null;
-  photo_url: string;
-  date_created?: Date | null | string;
-}
+import { IRow } from "../types";
 
 function Movie() {
   const router = useRouter();

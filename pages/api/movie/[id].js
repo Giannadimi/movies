@@ -4,37 +4,32 @@ export default async function handler(req, res) {
 
     const { id } = req.query;
     if (req.method === 'GET') {
-      const movie = await getMovieById(id);
-      if(movie){
+      try{
+        const movie = await getMovieById(id);
         res.status(200).json(movie)
-      }
-      else {
+      } catch {
         res.status(401).json({ message: "Movie not found!"})
       }
 
     }
     
     if (req.method === 'DELETE') {
-      const successDel = await deleteMovieById(id);
-      if (successDel){
-      res.status(200).json({ message: "Success Delete!"})
-      } else {
+      try {
+        const successDel = await deleteMovieById(id);
+        console.log(successDel);
+        res.status(200).json({ message: "Success Delete!"})
+      } catch {
         res.status(400).json({ message: "Not Success Delete!"})
       }
     }
     
     if (req.method === 'PUT') {
-      const {name_movie, description, rating, date_created, photo_url} = req.body;
-      console.log(req.body);
-      console.log(name_movie, description, rating, date_created, photo_url)
-      const movieUpdate = await editMovieById(id, name_movie, description, rating, date_created, photo_url);
-      console.log(movieUpdate);
-
-      if (movieUpdate){
+      try{
+        const movieUpdate = await editMovieById(req.body);
+        console.log(movieUpdate);
       res.status(200).json({message: "Success Edit!"})
-      } else {
-      res.status(400).json({message: "Not Success Edit!"})
-
+      } catch {
+        res.status(400).json({message: "Not Success Edit!"})
       }
     }
   

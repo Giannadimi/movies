@@ -10,14 +10,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 import BackButton from "../../src/components/Button/BackButton";
-
-interface IMovie {
-  name_movie: string;
-  description: string;
-  rating: number;
-  date_created: Date | null;
-  photo_url: string;
-}
+import { IMovie } from "../types";
+import validation from "../functionHelper";
 
 interface IErrors extends IMovie {}
 
@@ -40,42 +34,6 @@ export default function AddMovie() {
     date_created: "",
     photo_url: "",
   });
-
-  const digitReg = RegExp(/\d/);
-  const urlReg = RegExp(
-    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
-  );
-
-  const validation = (values: any) => {
-    console.log(values);
-    let errors = {
-      name_movie: "",
-      description: "",
-      rating: "",
-      date_created: "",
-      photo_url: "",
-    };
-    console.log(values.rating, values.rating > 0);
-    if (!values.name_movie) {
-      errors.name_movie = "Movie's name can't be empty.";
-    }
-    if (!values.photo_url) {
-      errors.photo_url = "Movie's photo Url can't be empty.";
-    } else if (!urlReg.test(values.photo_url)) {
-      errors.photo_url = "Enter an image URL.";
-    }
-    if (!values.description) {
-      errors.description = "Movie's description can't be empty.";
-    }
-    if (!values.rating) {
-      errors.rating = "This field is required.";
-    } else if (!digitReg.test(values.rating)) {
-      errors.rating = "This field accept only digits 1 to 5.";
-    } else if (values.rating <= 0 && values.rating > 5) {
-      errors.rating = "This field accept only digits 1 to 5.";
-    }
-    return errors;
-  };
 
   const addNew = async () => {
     try {

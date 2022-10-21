@@ -24,8 +24,7 @@ function MyApp(props: any) {
       </Head>
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
 
-      {/* TODO: αφού δεν περνάς children στο component μπορείς να το γράψεις και ώς <Header /> */}
-      <Header></Header>
+      <Header />
       <Component {...pageProps} />
       {/* <Footer></Footer> */}
       <Box mb={5}></Box>
