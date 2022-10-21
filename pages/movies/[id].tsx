@@ -156,7 +156,7 @@ export default function CardDetails() {
                           display="block"
                           gutterBottom
                         ></Typography>
-                        <Fab size="small" color="secondary" aria-label="edit">
+                        <Fab size="small" color="primary" aria-label="edit">
                           <EditIcon
                             onClick={() => router.push(`edit/${data.id}`)}
                           />
@@ -168,7 +168,7 @@ export default function CardDetails() {
                         sx={{ mr: 2 }}
                         onClick={() => removeMovie(data.id)}
                       >
-                        <Fab size="small" color="primary" aria-label="add">
+                        <Fab size="small" color="error" aria-label="add">
                           <DeleteIcon />
                         </Fab>
                       </IconButton>

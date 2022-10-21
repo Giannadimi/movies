@@ -42,14 +42,12 @@ export default function SignUp() {
     }
     if (!values.email) {
       errors.email = "Email is required.";
-    }
-    if (!Regex.test(values.email)) {
+    } else if (!Regex.test(values.email)) {
       errors.email = "Please enter a valid email.";
     }
     if (!values.password) {
       errors.password = "Password is required.";
-    }
-    if (!passRegex.test(values.password)) {
+    } else if (!passRegex.test(values.password)) {
       errors.password =
         "Password must be more than 8 characters and at least 1 must be digit.";
     }

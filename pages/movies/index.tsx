@@ -76,7 +76,6 @@ function Movie() {
           spacing={2}
           justifyContent="center"
           alignItems="stretch"
-          // key={id}
           sx={{
             height: "200",
             MaxWidth: "100%",
@@ -93,7 +92,7 @@ function Movie() {
             } = row;
             return (
               <Grid item md={4}>
-                <Card sx={{ m: 1, minWidth: 292 }}>
+                <Card key={id} sx={{ m: 1, minWidth: 292 }}>
                   <CardMedia
                     component="img"
                     height="200"

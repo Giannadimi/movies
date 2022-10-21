@@ -1,8 +1,5 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
+import { Box, Button, Typography, Container, TextField } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -62,23 +59,20 @@ export default function AddMovie() {
     if (!values.name_movie) {
       errors.name_movie = "Movie's name can't be empty.";
     }
+    if (!values.photo_url) {
+      errors.photo_url = "Movie's photo Url can't be empty.";
+    } else if (!urlReg.test(values.photo_url)) {
+      errors.photo_url = "Enter an image URL.";
+    }
     if (!values.description) {
       errors.description = "Movie's description can't be empty.";
     }
     if (!values.rating) {
       errors.rating = "This field is required.";
-    }
-    if (!digitReg.test(values.rating)) {
+    } else if (!digitReg.test(values.rating)) {
       errors.rating = "This field accept only digits 1 to 5.";
-    }
-    if (values.rating <= 0 && values.rating > 5) {
-      errors.rating = "Rating must be 1 - 5.";
-    }
-    if (!values.photo_url) {
-      errors.photo_url = "This field is required.";
-    }
-    if (!urlReg.test(values.photo_url)) {
-      errors.photo_url = "Enter an image URL.";
+    } else if (values.rating <= 0 && values.rating > 5) {
+      errors.rating = "This field accept only digits 1 to 5.";
     }
     return errors;
   };
@@ -210,7 +204,7 @@ export default function AddMovie() {
             color="primary"
             autoComplete="off"
             multiline
-            maxRows={4}
+            rows={4}
             required
             value={values.description}
             onChange={(e) =>

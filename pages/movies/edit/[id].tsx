@@ -7,7 +7,7 @@ import {
   TextField,
   Alert,
 } from "@mui/material";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -59,27 +59,23 @@ export default function editMovie() {
       date_created: "",
       photo_url: "",
     };
-    console.log(data.rating, data.rating > 0);
     if (!data.name_movie) {
       errors.name_movie = "Movie's name can't be empty.";
+    }
+    if (!data.photo_url) {
+      errors.photo_url = "This field is required.";
+    } else if (!urlReg.test(data.photo_url)) {
+      errors.photo_url = "Enter an image URL.";
     }
     if (!data.description) {
       errors.description = "Movie's description can't be empty.";
     }
     if (!data.rating) {
       errors.rating = "This field is required.";
-    }
-    if (!digitReg.test(data.rating)) {
+    } else if (!digitReg.test(data.rating)) {
       errors.rating = "This field accept only digits 1-5.";
-    }
-    if (data.rating <= 0 && data.rating > 5) {
+    } else if (data.rating <= 0 && data.rating > 5) {
       errors.rating = "Rating must be 1 - 5.";
-    }
-    if (!data.photo_url) {
-      errors.photo_url = "This field is required.";
-    }
-    if (!urlReg.test(data.photo_url)) {
-      errors.photo_url = "Enter an image URL.";
     }
     return errors;
   };
@@ -196,7 +192,7 @@ export default function editMovie() {
               id="name"
               label="Movie's Name"
               variant="outlined"
-              color="secondary"
+              color="primary"
               focused
               autoComplete="off"
               required
@@ -214,7 +210,7 @@ export default function editMovie() {
               type="url"
               label="Photo Url"
               variant="outlined"
-              color="secondary"
+              color="primary"
               focused
               autoComplete="off"
               required
@@ -231,7 +227,7 @@ export default function editMovie() {
               id="description"
               label="Description"
               variant="outlined"
-              color="secondary"
+              color="primary"
               focused
               autoComplete="off"
               multiline
@@ -252,7 +248,7 @@ export default function editMovie() {
               id="rating"
               label="Rating"
               variant="outlined"
-              color="secondary"
+              color="primary"
               focused
               autoComplete="off"
               required
@@ -284,7 +280,7 @@ export default function editMovie() {
               sx={{ mt: 1, mb: 1 }}
               variant="contained"
               disabled={isDisabled()}
-              color="secondary"
+              color="primary"
               onClick={handleClick}
             >
               Save
