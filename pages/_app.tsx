@@ -25,8 +25,10 @@ function MyApp(props: any) {
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
 
       <Header />
+      {/* <Provider > */}
       <Component {...pageProps} />
       {/* <Footer></Footer> */}
+      {/* </Provider> */}
       <Box mb={5}></Box>
     </>
   );

@@ -32,13 +32,20 @@ export default function LoggedIn() {
     try {
       console.log(values);
       const resp = await axios.post(`http://localhost:3000/api/login`, values);
+      console.log(resp.data);
       if (resp.status == 200) {
-        router.push("/homepage");
+        router.push("/movies");
       }
     } catch (error) {
       console.error(error);
-      if (error.response.status == 400) {
+      if (!error.response) {
+        setserverErrors("No server Response");
+      } else if (error.response.status == 400) {
         setserverErrors(error.response.data.message);
+      } else if (error.response.status == 401) {
+        setserverErrors("Unauthorized");
+      } else {
+        setserverErrors("Login Failed");
       }
     }
   };

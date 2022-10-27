@@ -228,7 +228,7 @@ export default function editMovie() {
                 renderInput={(params) => (
                   <TextField
                     sx={{ mt: 2, width: 300 }}
-                    color="success"
+                    color="primary"
                     {...params}
                   />
                 )}

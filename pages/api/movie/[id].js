@@ -6,9 +6,9 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       try{
         const movie = await getMovieById(id);
-        res.status(200).json(movie)
+        res.status(200).json(movie);
       } catch {
-        res.status(401).json({ message: "Movie not found!"})
+        res.status(401).json({ message: "Movie not found!"});
       }
 
     }
@@ -17,9 +17,9 @@ export default async function handler(req, res) {
       try {
         const successDel = await deleteMovieById(id);
         console.log(successDel);
-        res.status(200).json({ message: "Success Delete!"})
+        res.status(200).json({ message: "Success Delete!"});
       } catch {
-        res.status(400).json({ message: "Not Success Delete!"})
+        res.status(400).json({ message: "Not Success Delete!"});
       }
     }
     
@@ -27,9 +27,9 @@ export default async function handler(req, res) {
       try{
         const movieUpdate = await editMovieById(req.body);
         console.log(movieUpdate);
-      res.status(200).json({message: "Success Edit!"})
+      res.status(200).json({message: "Success Edit!"});
       } catch {
-        res.status(400).json({message: "Not Success Edit!"})
+        res.status(400).json({message: "Not Success Edit!"});
       }
     }
   

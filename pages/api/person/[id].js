@@ -5,10 +5,10 @@ export default async function handler(req, res) {
     const { id } = req.query;
     if (req.method === 'GET') {
         try {
-          const res = await getUser(id);
-          res.status(200).json(res)
+          const user = await getUser(id);
+          res.status(200).json(user);
         } catch {
-          res.status(401).json({ message: "User not found!"})
+          res.status(401).json({ message: "User not found!"});
         }
   
       }
@@ -19,9 +19,9 @@ export default async function handler(req, res) {
         // console.log(req.body);
         const personAdded = await addUser(id, username, email, password);
         console.log(personAdded);
-      res.status(200).json({message: "Success Register!"})
+        res.status(200).json({message: "Success Register!"});
       } catch {
-        res.status(400).json({message: "Not Success Register!"})
+        res.status(400).json({message: "Not Success Register!"});
       }
     }
 

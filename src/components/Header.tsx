@@ -45,6 +45,7 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    Router.push("/login");
   };
 
   return (

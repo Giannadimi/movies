@@ -7,12 +7,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Alert } from "@mui/material";
-
-interface IForm {
-  username: string;
-  email: string;
-  password: string;
-}
+import { IForm } from "./types";
 
 interface IErrors extends IForm {}
 
@@ -62,7 +57,7 @@ export default function SignUp() {
         values
       );
       if (resp.status == 200) {
-        router.push("/movies");
+        router.push("/login");
       }
     } catch (error) {
       console.error(error);

@@ -31,7 +31,13 @@ function Movie() {
 
   const getData = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:3000/api/movie`);
+      const { data } = await axios.get(`http://localhost:3000/api/movie`, {
+        // headers: {
+        //   authorization:
+        //     "Bearer " +
+        //     "e866be0adb2fd86a680d37d4fcfceb8e2e1943698012aa748d2462c7e4f3812ccc87d2f400191db6da8668d83f91dfb77b538844c4b64aaad38cd11a4dc27ad7",
+        // },
+      });
       console.log(data);
 
       setData(data);

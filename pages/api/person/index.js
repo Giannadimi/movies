@@ -8,8 +8,9 @@ export default async function handler(req, res) {
 
   if (req.method === 'GET') {  
       try{
-        const people = await getAllUsers();
-        res.status(200).json(people.rows);
+        const users = await getAllUsers();
+        console.log("Users:", users);
+        res.status(200).json(users);
       } catch {    
         res.status(400).json({ message: 'Failed' });
       }   

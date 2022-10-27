@@ -5,7 +5,7 @@ export const getUser = async (id: number) => {
     const client = await pool.connect();
     try {
         const res = await client.query('SELECT * FROM person WHERE id=$1', [id]); 
-        return res.rows;   
+        return res.rows[0];   
     } catch (error) {
         console.error(error);
         throw error;
@@ -25,6 +25,19 @@ export const getAllUsers = async () => {
     } finally {
         client.release();
     }
+}
+
+export const addUser = async(username:string, email: string) => {
+    const client = await pool.connect();
+    try {
+        const newUser = await client.query('UPDATE person SET username = $1, email = $2, where id = $3 returning *', [username, email]);
+        console.log(newUser?.rows[0]);
+        return newUser?.rows[0];
+        } catch (error) {
+        console.error(error);
+        } finally {
+        client.release();
+        }    
 }
 
 export const getAllMovies = async () => {
@@ -54,7 +67,6 @@ export const getMovieById = async (id: number) => {
 }
 
 export const deleteMovieById = async(id: number) => {
-
     const client = await pool.connect();
     try {       
         const remove = await client.query("DELETE FROM movie where id=$1", [id]);
@@ -96,18 +108,7 @@ export const editMovieById = async(edit: IMovie ) => {
         } 
 } 
         
-export const addUser = async(username:string, email: string) => {
-    const client = await pool.connect();
-    try {
-        const newUser = await client.query('UPDATE person SET username = $1, email = $2, where id = $3 returning *', [username, email]);
-        console.log(newUser?.rows[0]);
-        return newUser?.rows[0];
-        } catch (error) {
-        console.error(error);
-        } finally {
-        client.release();
-        }    
-}
+
 
 
 
