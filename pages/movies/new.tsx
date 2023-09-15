@@ -12,8 +12,15 @@ import moment from "moment";
 import BackButton from "../../src/components/Button/BackButton";
 import { IMovie } from "../types";
 import validation from "../functionHelper";
+import Rating from "@mui/material/Rating";
 
-interface IErrors extends IMovie {}
+export interface IErrors {
+  name_movie: string;
+  description: string;
+  rating: string;
+  photo_url: string;
+  date_created: string;
+}
 
 export default function AddMovie() {
   const router = useRouter();
@@ -30,22 +37,21 @@ export default function AddMovie() {
   const [values, setValues] = useState<IMovie>({
     name_movie: "",
     description: "",
-    rating: "",
+    rating: null,
     date_created: "",
     photo_url: "",
   });
 
   const addNew = async () => {
     try {
-      console.log({ values });
       const resp = await axios.post(`http://localhost:3000/api/movie`, values);
       if (resp.status == 200) {
         router.push("/movies");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      if (error.response.status == 400) {
-        setserverErrors(error.response.data.message);
+      if (error?.response.status == 400) {
+        setserverErrors(error?.response.data.message);
       }
     }
   };
@@ -74,7 +80,6 @@ export default function AddMovie() {
   };
 
   const handleDate = (event: any) => {
-    console.log(event._d);
     setSelectedDate(event);
     setValues({ ...values, date_created: event });
   };
@@ -94,7 +99,6 @@ export default function AddMovie() {
           justifyContent: "center",
           MaxWidth: "100%",
           height: "100vh",
-          mt: 1,
           padding: "340px",
           flexDirection: "column",
           alignItems: "center",
@@ -112,9 +116,15 @@ export default function AddMovie() {
             borderRadius: "8px",
             backgroundColor: "#F1F1F1",
             mt: 4,
+            boxShadow: "10px 10px 20px grey",
           }}
         >
-          <Typography variant="h5" gutterBottom color="black" sx={{ mt: 2 }}>
+          <Typography
+            variant="h5"
+            gutterBottom
+            fontWeight="bold"
+            sx={{ mt: 3 }}
+          >
             Add Movie
           </Typography>
           <TextField
@@ -174,16 +184,13 @@ export default function AddMovie() {
               <Alert severity="error">{errors.description}</Alert>
             </Box>
           )}
-          <TextField
+          <Rating
             sx={{ mt: 2, width: 300 }}
-            id="rating"
-            label="Rating"
-            variant="outlined"
-            color="primary"
-            autoComplete="off"
-            required
+            name="rating"
             value={values.rating}
-            onChange={(e) => setValues({ ...values, rating: e.target.value })}
+            onChange={(event: any, newValue: any) =>
+              setValues({ ...values, rating: newValue })
+            }
           />
           {errors.rating && (
             <Box mt={0.8}>
@@ -207,7 +214,7 @@ export default function AddMovie() {
             />
           </LocalizationProvider>
           <Button
-            sx={{ mt: 1, mb: 1 }}
+            sx={{ my: 5 }}
             variant="contained"
             disabled={isDisabled()}
             color="primary"

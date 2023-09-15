@@ -30,9 +30,7 @@ export default function LoggedIn() {
 
   const userLogin = async () => {
     try {
-      console.log(values);
       const resp = await axios.post(`http://localhost:3000/api/login`, values);
-      console.log(resp.data);
       if (resp.status == 200) {
         router.push("/movies");
       }
@@ -52,7 +50,6 @@ export default function LoggedIn() {
 
   const handleLogin = () => {
     let errors = { email: "", password: "" };
-    console.log(values);
     console.log(errors);
     const b = loginValidation(values, errors);
     setErrors(b);

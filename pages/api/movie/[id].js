@@ -16,7 +16,6 @@ export default async function handler(req, res) {
     if (req.method === 'DELETE') {
       try {
         const successDel = await deleteMovieById(id);
-        console.log(successDel);
         res.status(200).json({ message: "Success Delete!"});
       } catch {
         res.status(400).json({ message: "Not Success Delete!"});
@@ -26,7 +25,6 @@ export default async function handler(req, res) {
     if (req.method === 'PUT') {
       try{
         const movieUpdate = await editMovieById(req.body);
-        console.log(movieUpdate);
       res.status(200).json({message: "Success Edit!"});
       } catch {
         res.status(400).json({message: "Not Success Edit!"});

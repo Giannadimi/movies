@@ -24,3 +24,19 @@ a {
     background: black;
   }
 }
+
+.card:hover {
+  transform: scale(1.1);
+  box-shadow: 5px 8px 8px grey;
+}
+.card {
+  transition: transform 0.7s;
+}
+.image {
+  margin: auto;
+  display: flex;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 4px;
+  object-fit: contain;
+}

@@ -18,16 +18,17 @@ import axios from "axios";
 import BackButton from "../../../src/components/Button/BackButton";
 import validation from "../../functionHelper";
 import { IMovie } from "../../types";
-
-interface IErrors extends IMovie {}
+import { IErrors } from "../new";
+import Rating from "@mui/material/Rating/Rating";
 
 export default function editMovie() {
   const router = useRouter();
   const [serverErrors, setserverErrors] = useState("");
-  const [data, setData] = useState<IMovie | null>({});
+  const [data, setData] = useState<IMovie | undefined | any>({});
   const [open, setOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [loading, setIsloading] = useState(true);
 
   const id = router.query.id;
 
@@ -40,7 +41,6 @@ export default function editMovie() {
   });
 
   const handleDate = (event: any) => {
-    console.log(event._d);
     setSelectedDate(event);
     // setSelectedDate(moment(event._d).format('DD/MM/YYYY'))
     setData({ ...data, date_created: event });
@@ -48,25 +48,24 @@ export default function editMovie() {
 
   const getData = async (id: any) => {
     try {
-      console.log(id);
       const { data } = await axios.get(`http://localhost:3000/api/movie/${id}`);
       console.log(data);
-      console.log(data.rating);
       if (!data?.date_created) {
         data.date_created = null;
       }
       setData(data);
-    } catch (error) {
+      setIsloading(false);
+    } catch (error: any) {
       console.error(error);
-      if (error.response.status == 400) {
-        setserverErrors(error.response.data.message);
+      if (error?.response.status == 400) {
+        setserverErrors(error?.response.data.message);
       }
+      setIsloading(false);
     }
   };
 
   const editDescription = async () => {
     try {
-      console.log({ data });
       const resp = await axios.put(
         `http://localhost:3000/api/movie/${id}`,
         data
@@ -108,6 +107,9 @@ export default function editMovie() {
     setErrors(a);
   }, [data]);
 
+  if (loading) {
+    return "Loading...";
+  }
   return (
     <>
       <Box mt={9}>
@@ -129,7 +131,9 @@ export default function editMovie() {
           bgcolor: "white",
         }}
       >
-        <div>
+        
+        <>
+        
           <Box
             component="form"
             sx={{
@@ -202,7 +206,15 @@ export default function editMovie() {
                 <Alert severity="error">{errors.description}</Alert>
               </Box>
             )}
-            <TextField
+            <Rating
+              sx={{ mt: 2, width: 300 }}
+              name="rating"
+              value={data?.rating}
+              onChange={(e, newValue: any) =>
+                setData({ ...data, rating: newValue })
+              }
+            />
+            {/* <TextField
               sx={{ mt: 2, width: 300 }}
               id="rating"
               label="Rating"
@@ -213,7 +225,7 @@ export default function editMovie() {
               required
               value={data?.rating}
               onChange={(e) => setData({ ...data, rating: e.target.value })}
-            />
+            /> */}
             {errors.rating && (
               <Box mt={0.8}>
                 <Alert severity="error">{errors.rating}</Alert>
@@ -249,7 +261,7 @@ export default function editMovie() {
               </Box>
             )}
           </Box>
-        </div>
+        </>
       </Box>
       <Snackbar
         open={open}

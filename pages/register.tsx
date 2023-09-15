@@ -51,7 +51,6 @@ export default function SignUp() {
 
   const userRegister = async () => {
     try {
-      console.log(values);
       const resp = await axios.post(
         `http://localhost:3000/api/register`,
         values

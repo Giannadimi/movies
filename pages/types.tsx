@@ -5,11 +5,12 @@ export interface IForm {
 }
 
 export interface IMovie {
+  id?: number;
   name_movie: string;
   description: string;
-  rating: number;
+  rating: number | null;
   photo_url: string;
-  date_created: Date | null;
+  date_created: Date | null | string;
 }
 
 export interface IRow extends IMovie {

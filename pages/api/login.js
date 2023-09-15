@@ -12,7 +12,6 @@ export default async function login(req, res) {
     const client = await pool.connect();
         try {              
             const {email, password} = req.body;
-            console.log(email,password);
             const user = { email };
 
             const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
@@ -21,11 +20,9 @@ export default async function login(req, res) {
             } else {
               res.status(400).json({message: "Token generation failed"})
             }
-            const loginValid = await client.query('SELECT email, password FROM person WHERE email=$1', [email]);
-            console.log(loginValid.rows);
+            const loginValid = await client.query('SELECT email, password FROM user WHERE email=$1', [email]);
             if (loginValid.rows.length != 0) {
               const res = await compare(password, loginValid.rows[0].password);
-              console.log(res)
                 if (res) {
                   console.log('Logged In!')
                 }
@@ -53,7 +50,6 @@ export default async function login(req, res) {
   if (req.method === 'DELETE') {
     try {
       refreshTokens = refreshTokens.filter(token => token !== req.body.token)
-      console.log(refreshTokens);
       res.status(200).json({ message: "Success Logout!"})
     } catch {
       res.status(400).json({ message: "Not Success Logout!"})
