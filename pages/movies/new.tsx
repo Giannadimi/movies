@@ -28,7 +28,7 @@ export default function AddMovie() {
   const router = useRouter();
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [serverErrors, setserverErrors] = useState("");
+  const [serverErrors, setserverErrors] = useState<string>("");
   const [errors, setErrors] = useState<IErrors>({
     name_movie: "",
     description: "",

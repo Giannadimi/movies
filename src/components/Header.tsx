@@ -31,9 +31,8 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
-  const [state, setState] = React.useState({
-    left: false,
-  });
+  const [state, setState] = React.useState({ left: false });
+  const [activeItem, setActiveItem] = React.useState<any>("/");
 
   const darkTheme = createTheme({
     palette: {
@@ -136,7 +135,7 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={handleCloseUserMenu}>
+              <MenuItem onClick={() => router.push("/profile")}>
                 <Avatar sx={{ mr: 0.7 }} />
                 Profile
               </MenuItem>
@@ -159,13 +158,18 @@ function Header() {
           onClose={toggleDrawer("left", false)}
         >
           <List>
-            {listItems.map((item, index) => (
+            {listItems.map((item) => (
               <ListItem
                 key={item.name}
                 disablePadding
                 onClick={() => {
                   router.push(item.url);
+                  setActiveItem(item.url);
                   setState({ ...state, left: false });
+                }}
+                sx={{
+                  backgroundColor:
+                    activeItem === item.url ? "#7D7D00" : "transparent",
                 }}
               >
                 <ListItemButton>

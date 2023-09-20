@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import Header from "../src/components/Header";
 import Head from "next/head";
-import { Box } from "@mui/system";
+import { Box, Toolbar } from "@mui/material";
 
 function MyApp(props: any) {
   const { Component, pageProps } = props;
@@ -25,7 +25,8 @@ function MyApp(props: any) {
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
 
       <Header />
-      {/* <Provider > */}
+      <Toolbar />
+
       <Component {...pageProps} />
       {/* <Footer></Footer> */}
       {/* </Provider> */}
