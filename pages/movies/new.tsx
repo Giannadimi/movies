@@ -13,6 +13,8 @@ import BackButton from "../../src/components/Button/BackButton";
 import { IMovie } from "../types";
 import validation from "../functionHelper";
 import Rating from "@mui/material/Rating";
+import FormLayout from "../../src/layout/FormLayout";
+import Divider from "@mui/material/Divider";
 
 export interface IErrors {
   name_movie: string;
@@ -37,7 +39,7 @@ export default function AddMovie() {
   const [values, setValues] = useState<IMovie>({
     name_movie: "",
     description: "",
-    rating: null,
+    rating: 0,
     date_created: "",
     photo_url: "",
   });
@@ -48,11 +50,8 @@ export default function AddMovie() {
       if (resp.status == 200) {
         router.push("/movies");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      if (error?.response.status == 400) {
-        setserverErrors(error?.response.data.message);
-      }
     }
   };
 
@@ -93,142 +92,105 @@ export default function AddMovie() {
           }}
         />
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          MaxWidth: "100%",
-          height: "100vh",
-          padding: "340px",
-          flexDirection: "column",
-          alignItems: "center",
-          bgcolor: "white",
-        }}
-      >
-        <Box
-          component="form"
-          sx={{
-            width: 460,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            borderRadius: "8px",
-            backgroundColor: "#F1F1F1",
-            mt: 4,
-            boxShadow: "10px 10px 20px grey",
-          }}
-        >
-          <Typography
-            variant="h5"
-            gutterBottom
-            fontWeight="bold"
-            sx={{ mt: 3 }}
-          >
-            Add Movie
-          </Typography>
-          <TextField
-            sx={{ mt: 2, width: 300 }}
-            id="name"
-            label="Movie's Name"
-            variant="outlined"
-            color="primary"
-            autoComplete="off"
-            required
-            value={values.name_movie}
-            onChange={(e) =>
-              setValues({ ...values, name_movie: e.target.value })
-            }
-          />
-          {errors.name_movie && (
-            <Box mt={0.8}>
-              <Alert severity="error">{errors.name_movie}</Alert>
-            </Box>
-          )}
-          <TextField
-            sx={{ mt: 2, width: 300 }}
-            id="photoUrl"
-            type="url"
-            label="Photo Url"
-            variant="outlined"
-            color="primary"
-            autoComplete="off"
-            required
-            value={values.photo_url}
-            onChange={(e) =>
-              setValues({ ...values, photo_url: e.target.value })
-            }
-          />
-          {errors.photo_url && (
-            <Box mt={0.8}>
-              <Alert severity="error">{errors.photo_url}</Alert>
-            </Box>
-          )}
-          <TextField
-            sx={{ mt: 2, width: 300 }}
-            id="description"
-            label="Description"
-            variant="outlined"
-            color="primary"
-            autoComplete="off"
-            multiline
-            rows={4}
-            required
-            value={values.description}
-            onChange={(e) =>
-              setValues({ ...values, description: e.target.value })
-            }
-          />
-          {errors.description && (
-            <Box mt={0.8}>
-              <Alert severity="error">{errors.description}</Alert>
-            </Box>
-          )}
-          <Rating
-            sx={{ mt: 2, width: 300 }}
-            name="rating"
-            value={values.rating}
-            onChange={(event: any, newValue: any) =>
-              setValues({ ...values, rating: newValue })
-            }
-          />
-          {errors.rating && (
-            <Box mt={0.8}>
-              <Alert severity="error">{errors.rating}</Alert>
-            </Box>
-          )}
+      <FormLayout>
+        <Typography variant="h5">Add Movie</Typography>
+        <Divider sx={{ mt: 2, mb: 2 }} />
+        <TextField
+          fullWidth
+          sx={{ mt: 2 }}
+          id="name"
+          label="Movie's Name"
+          variant="outlined"
+          color="primary"
+          autoComplete="off"
+          required
+          value={values.name_movie}
+          onChange={(e) => setValues({ ...values, name_movie: e.target.value })}
+        />
+        {errors.name_movie && (
+          <Box mt={0.8}>
+            <Alert severity="error">{errors.name_movie}</Alert>
+          </Box>
+        )}
+        <TextField
+          fullWidth
+          sx={{ mt: 2 }}
+          id="photoUrl"
+          type="url"
+          label="Photo Url"
+          variant="outlined"
+          color="primary"
+          autoComplete="off"
+          required
+          value={values.photo_url}
+          onChange={(e) => setValues({ ...values, photo_url: e.target.value })}
+        />
+        {errors.photo_url && (
+          <Box mt={0.8}>
+            <Alert severity="error">{errors.photo_url}</Alert>
+          </Box>
+        )}
+        <TextField
+          fullWidth
+          sx={{ mt: 2 }}
+          id="description"
+          label="Description"
+          variant="outlined"
+          color="primary"
+          autoComplete="off"
+          multiline
+          rows={4}
+          required
+          value={values.description}
+          onChange={(e) =>
+            setValues({ ...values, description: e.target.value })
+          }
+        />
+        {errors.description && (
+          <Box mt={0.8}>
+            <Alert severity="error">{errors.description}</Alert>
+          </Box>
+        )}
+        <Rating
+          sx={{ mt: 2 }}
+          name="rating"
+          value={values.rating}
+          onChange={(event: any, newValue: any) =>
+            setValues({ ...values, rating: newValue })
+          }
+        />
+        {errors.rating && (
+          <Box mt={0.8}>
+            <Alert severity="error">{errors.rating}</Alert>
+          </Box>
+        )}
 
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Release Date"
-              inputFormat="DD/MM/YYYY"
-              value={selectedDate}
-              onChange={(newValue) => handleDate(newValue)}
-              renderInput={(params) => (
-                <TextField
-                  sx={{ mt: 2, width: 300 }}
-                  color="primary"
-                  {...params}
-                />
-              )}
-            />
-          </LocalizationProvider>
-          <Button
-            sx={{ my: 5 }}
-            variant="contained"
-            disabled={isDisabled()}
-            color="primary"
-            onClick={handleClick}
-          >
-            Save
-          </Button>
-          {serverErrors && (
-            <Box mt={0.8}>
-              <Alert severity="error">{serverErrors}</Alert>
-            </Box>
-          )}
-        </Box>
-      </Box>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Release Date"
+            inputFormat="DD/MM/YYYY"
+            value={selectedDate}
+            onChange={(newValue) => handleDate(newValue)}
+            renderInput={(params) => (
+              <TextField fullWidth sx={{ mt: 2 }} color="primary" {...params} />
+            )}
+          />
+        </LocalizationProvider>
+        <Button
+          sx={{ my: 5 }}
+          variant="contained"
+          disabled={isDisabled()}
+          fullWidth
+          onClick={handleClick}
+        >
+          Save
+        </Button>
+        {serverErrors && (
+          <Box mt={0.8}>
+            <Alert severity="error">{serverErrors}</Alert>
+          </Box>
+        )}
+      </FormLayout>
     </>
   );
 }

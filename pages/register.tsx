@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Alert } from "@mui/material";
@@ -23,7 +23,7 @@ export default function SignUp() {
     router.push("/login");
   };
 
-  const [errors, setErrors] = useState<IErrors>({});
+  const [errors, setErrors] = useState<IErrors | any>({});
   const [serverErrors, setserverErrors] = useState("");
 
   const Regex = RegExp(
@@ -60,9 +60,6 @@ export default function SignUp() {
       }
     } catch (error) {
       console.error(error);
-      if (error.response.status == 400) {
-        setserverErrors(error.response.data.message);
-      }
     }
   };
 
@@ -113,6 +110,7 @@ export default function SignUp() {
                     Με αυτό τον τρόπο θα κάνεις τον κώδικα πιο επεκτάσιμο και συντηρίσμο
           */}
             <TextField
+              fullWidth
               id="username"
               label="Username"
               variant="outlined"
@@ -122,7 +120,7 @@ export default function SignUp() {
               onChange={(e) =>
                 setValues({ ...values, username: e.target.value })
               }
-              sx={{ mt: 1, width: 300 }}
+              sx={{ mt: 1 }}
             />
             {errors.username && (
               <Box mt={0.8}>
@@ -130,6 +128,7 @@ export default function SignUp() {
               </Box>
             )}
             <TextField
+              fullWidth
               id="email"
               label="Email Adress"
               variant="outlined"
@@ -137,7 +136,7 @@ export default function SignUp() {
               autoComplete="off"
               value={values.email}
               onChange={(e) => setValues({ ...values, email: e.target.value })}
-              sx={{ mt: 1.5, width: 300 }}
+              sx={{ mt: 1.5 }}
             />
             {errors.email && (
               <Box mt={0.8}>
@@ -145,6 +144,7 @@ export default function SignUp() {
               </Box>
             )}
             <TextField
+              fullWidth
               id="password"
               label="Password"
               variant="outlined"
@@ -154,7 +154,7 @@ export default function SignUp() {
               onChange={(e) =>
                 setValues({ ...values, password: e.target.value })
               }
-              sx={{ mt: 1.5, width: 300 }}
+              sx={{ mt: 1.5 }}
             />
             {errors.password && (
               <Box mt={0.8}>
@@ -164,7 +164,8 @@ export default function SignUp() {
             <Button
               variant="contained"
               color="success"
-              sx={{ m: 1.5 }}
+              fullWidth
+              sx={{ mt: 2 }}
               onClick={handleSubmit}
             >
               Create an account
@@ -180,7 +181,9 @@ export default function SignUp() {
               sx={{ color: "black", mt: 1 }}
             >
               Already have an account?
-              <Button onClick={handleClick}>Login</Button>
+              <Button onClick={handleClick} sx={{ ml: 0.5 }}>
+                Login
+              </Button>
             </Typography>
           </Box>
         </div>

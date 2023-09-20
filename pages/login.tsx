@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { Alert } from "@mui/material";
@@ -15,8 +15,8 @@ export default function LoggedIn() {
     password: "",
   });
 
-  const [errors, setErrors] = useState({});
-  const [serverErrors, setserverErrors] = useState("");
+  const [errors, setErrors] = useState<any>({});
+  const [serverErrors, setserverErrors] = useState<string>("");
 
   const loginValidation = (values: any, errors: any) => {
     if (!values.email) {
@@ -36,15 +36,15 @@ export default function LoggedIn() {
       }
     } catch (error) {
       console.error(error);
-      if (!error.response) {
-        setserverErrors("No server Response");
-      } else if (error.response.status == 400) {
-        setserverErrors(error.response.data.message);
-      } else if (error.response.status == 401) {
-        setserverErrors("Unauthorized");
-      } else {
-        setserverErrors("Login Failed");
-      }
+      // if (!error.response) {
+      //   setserverErrors("No server Response");
+      // } else if (error.response.status == 400) {
+      //   setserverErrors(error.response.data.message);
+      // } else if (error.response.status == 401) {
+      //   setserverErrors("Unauthorized");
+      // } else {
+      //   setserverErrors("Login Failed");
+      // }
     }
   };
 
@@ -94,19 +94,22 @@ export default function LoggedIn() {
           <Typography variant="h4" gutterBottom color={"black"}>
             Login
           </Typography>
-
-          {/* TODO: Βλέπω Χρησημοποιείς μια σειρά των ζευγών TextField μαζί με errors.email etc..
-                    άρα μπορείς να το κάνεις ένα δικό σου component και μετά με array.map να rendareis τα components
-                    Με αυτό τον τρόπο θα κάνεις τον κώδικα πιο επεκτάσιμο και συντηρίσμο
-          */}
           <TextField
+            fullWidth
             id="email"
             variant="outlined"
             label="Email Adress"
             autoComplete="off"
             value={values.email}
             onChange={(e) => setValues({ ...values, email: e.target.value })}
-            sx={{ mt: 1, width: 300 }}
+            sx={{
+              mt: 2,
+              "& .MuiOutlinedInput-root": {
+                "& > fieldset": {
+                  borderRadius: "24px",
+                },
+              },
+            }}
           />
           {errors.email && (
             <Box mt={0.8}>
@@ -114,13 +117,21 @@ export default function LoggedIn() {
             </Box>
           )}
           <TextField
+            fullWidth
             id="password"
             variant="outlined"
             label="Password"
             type="password"
             value={values.password}
             onChange={(e) => setValues({ ...values, password: e.target.value })}
-            sx={{ mt: 1.5, width: 300 }}
+            sx={{
+              mt: 2,
+              "& .MuiOutlinedInput-root": {
+                "& > fieldset": {
+                  borderRadius: "24px",
+                },
+              },
+            }}
           />
           {errors.password && (
             <Box mt={0.8}>
@@ -128,7 +139,8 @@ export default function LoggedIn() {
             </Box>
           )}
           <Button
-            sx={{ mt: 1.5, width: 300 }}
+            sx={{ mt: 2, borderRadius: 8 }}
+            fullWidth
             variant="contained"
             color="primary"
             onClick={handleLogin}
@@ -146,7 +158,9 @@ export default function LoggedIn() {
             sx={{ color: "black", mt: 1 }}
           >
             Don't have an account?
-            <Button onClick={handleClick}>Sign Up</Button>
+            <Button onClick={handleClick} sx={{ ml: 0.5 }}>
+              Sign Up
+            </Button>
           </Typography>
         </Box>
       </Box>

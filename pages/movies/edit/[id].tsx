@@ -6,6 +6,8 @@ import {
   Typography,
   TextField,
   Alert,
+  Card,
+  Divider,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Dayjs } from "dayjs";
@@ -20,10 +22,11 @@ import validation from "../../functionHelper";
 import { IMovie } from "../../types";
 import { IErrors } from "../new";
 import Rating from "@mui/material/Rating/Rating";
+import FormLayout from "../../../src/layout/FormLayout";
 
 export default function editMovie() {
   const router = useRouter();
-  const [serverErrors, setserverErrors] = useState("");
+  const [serverErrors, setserverErrors] = useState<any>("");
   const [data, setData] = useState<IMovie | undefined | any>({});
   const [open, setOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -55,10 +58,10 @@ export default function editMovie() {
       }
       setData(data);
       setIsloading(false);
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      if (error?.response.status == 400) {
-        setserverErrors(error?.response.data.message);
+      if (error?.response?.status == 400) {
+        setserverErrors(error?.response?.data.message);
       }
       setIsloading(false);
     }
@@ -119,151 +122,114 @@ export default function editMovie() {
           }}
         />
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          MaxWidth: "100%",
-          height: "100vh",
-          padding: "340px",
-          flexDirection: "column",
-          alignItems: "center",
-          bgcolor: "white",
-        }}
-      >
-        
-        <>
-        
-          <Box
-            component="form"
-            sx={{
-              width: 460,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              borderRadius: "8px",
-              backgroundColor: "#F1F1F1",
-              mt: 4,
-            }}
+      <FormLayout>
+          <Typography variant="h5" sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+            Edit Movie
+          </Typography>
+          <Divider sx={{mt:2, mb:2}}/>
+          <TextField
+            fullWidth
+            sx={{ mt: 2}}
+            id="name"
+            label="Movie's Name"
+            variant="outlined"
+            color="primary"
+            focused
+            autoComplete="off"
+            required
+            value={data?.name_movie}
+            onChange={(e) => setData({ ...data, name_movie: e.target.value })}
+            
+          />
+          {errors.name_movie && (
+            <Box mt={0.8}>
+              <Alert severity="error">{errors.name_movie}</Alert>
+            </Box>
+          )}
+          <TextField
+            fullWidth
+            sx={{ mt: 2}}
+            id="photoUrl"
+            type="url"
+            label="Photo Url"
+            variant="outlined"
+            color="primary"
+            focused
+            autoComplete="off"
+            required
+            value={data?.photo_url}
+            onChange={(e) => setData({ ...data, photo_url: e.target.value })}
+          />
+          {errors.photo_url && (
+            <Box mt={0.8}>
+              <Alert severity="error">{errors.photo_url}</Alert>
+            </Box>
+          )}
+          <TextField
+            fullWidth
+            sx={{ mt: 2}}
+            id="description"
+            label="Description"
+            variant="outlined"
+            color="primary"
+            focused
+            autoComplete="off"
+            multiline
+            maxRows={4}
+            required
+            value={data?.description}
+            onChange={(e) => setData({ ...data, description: e.target.value })}
+          />
+          {errors.description && (
+            <Box mt={0.8}>
+              <Alert severity="error">{errors.description}</Alert>
+            </Box>
+          )}
+          <Rating
+            sx={{ mt: 2}}
+            name="rating"
+            value={data?.rating}
+            onChange={(e, newValue: any) =>
+              setData({ ...data, rating: newValue })
+            }
+          />
+          {errors.rating && (
+            <Box mt={0.8}>
+              <Alert severity="error">{errors.rating}</Alert>
+            </Box>
+          )}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Release Date"
+              inputFormat="DD/MM/YYYY"
+              value={data?.date_created}
+              onChange={(newValue) => handleDate(newValue)}
+              renderInput={(params) => (
+                <TextField
+                  fullWidth
+                  sx={{ mt: 2}}
+                  color="primary"
+                  {...params}
+                />
+              )}
+            />
+          </LocalizationProvider>
+          <Button
+            sx={{ mt: 4, mb: 1, borderRadius: 8, backgroundColor: 'primary' }}
+            fullWidth
+            variant="contained"
+            disabled={isDisabled()}
+            onClick={handleClick}
           >
-            <Typography variant="h5" gutterBottom color="black" sx={{ mt: 2 }}>
-              Edit Movie
-            </Typography>
-            <TextField
-              sx={{ mt: 2, width: 300 }}
-              id="name"
-              label="Movie's Name"
-              variant="outlined"
-              color="primary"
-              focused
-              autoComplete="off"
-              required
-              value={data?.name_movie}
-              onChange={(e) => setData({ ...data, name_movie: e.target.value })}
-            />
-            {errors.name_movie && (
-              <Box mt={0.8}>
-                <Alert severity="error">{errors.name_movie}</Alert>
-              </Box>
-            )}
-            <TextField
-              sx={{ mt: 2, width: 300 }}
-              id="photoUrl"
-              type="url"
-              label="Photo Url"
-              variant="outlined"
-              color="primary"
-              focused
-              autoComplete="off"
-              required
-              value={data?.photo_url}
-              onChange={(e) => setData({ ...data, photo_url: e.target.value })}
-            />
-            {errors.photo_url && (
-              <Box mt={0.8}>
-                <Alert severity="error">{errors.photo_url}</Alert>
-              </Box>
-            )}
-            <TextField
-              sx={{ mt: 2, width: 300 }}
-              id="description"
-              label="Description"
-              variant="outlined"
-              color="primary"
-              focused
-              autoComplete="off"
-              multiline
-              maxRows={4}
-              required
-              value={data?.description}
-              onChange={(e) =>
-                setData({ ...data, description: e.target.value })
-              }
-            />
-            {errors.description && (
-              <Box mt={0.8}>
-                <Alert severity="error">{errors.description}</Alert>
-              </Box>
-            )}
-            <Rating
-              sx={{ mt: 2, width: 300 }}
-              name="rating"
-              value={data?.rating}
-              onChange={(e, newValue: any) =>
-                setData({ ...data, rating: newValue })
-              }
-            />
-            {/* <TextField
-              sx={{ mt: 2, width: 300 }}
-              id="rating"
-              label="Rating"
-              variant="outlined"
-              color="primary"
-              focused
-              autoComplete="off"
-              required
-              value={data?.rating}
-              onChange={(e) => setData({ ...data, rating: e.target.value })}
-            /> */}
-            {errors.rating && (
-              <Box mt={0.8}>
-                <Alert severity="error">{errors.rating}</Alert>
-              </Box>
-            )}
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Release Date"
-                inputFormat="DD/MM/YYYY"
-                value={data?.date_created}
-                onChange={(newValue) => handleDate(newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    sx={{ mt: 2, width: 300 }}
-                    color="primary"
-                    {...params}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-            <Button
-              sx={{ mt: 1, mb: 1 }}
-              variant="contained"
-              disabled={isDisabled()}
-              color="primary"
-              onClick={handleClick}
-            >
-              Save
-            </Button>
-            {serverErrors && (
-              <Box mt={0.8}>
-                <Alert severity="error">{serverErrors}</Alert>
-              </Box>
-            )}
-          </Box>
-        </>
-      </Box>
-      <Snackbar
+            Save
+          </Button>
+          {serverErrors && (
+            <Box mt={0.8}>
+              <Alert severity="error">{serverErrors}</Alert>
+            </Box>
+          )}
+          </FormLayout>
+        <Snackbar
         open={open}
         autoHideDuration={6000}
         onClose={() => setOpen(false)}

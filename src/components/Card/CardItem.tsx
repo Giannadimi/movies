@@ -12,7 +12,7 @@ interface ICardProps {
   id?: number;
   name_movie?: string;
   description?: string;
-  rating?: number;
+  rating: number | undefined;
   photo_url?: string;
   date_created?: Date | string | null;
 }

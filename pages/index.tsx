@@ -1,3 +1,5 @@
+import Box from "@mui/material/Box";
+
 export default function Home() {
-  return <></>;
+  return <>{/* <Box sx={{ width: "100%", color: "red" }}></Box> */}</>;
 }

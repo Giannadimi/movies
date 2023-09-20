@@ -4,27 +4,36 @@ import {
   Box,
   Tooltip,
   Avatar,
-  Button,
   createTheme,
   IconButton,
   Menu,
   MenuItem,
-  Link,
   ThemeProvider,
   Toolbar,
   Typography,
   Divider,
+  Drawer,
 } from "@mui/material";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import HomeIcon from "@mui/icons-material/Home";
 import Logout from "@mui/icons-material/Logout";
 import MovieCreationIcon from "@mui/icons-material/MovieCreation";
-import Router from "next/router";
+import { useRouter } from "next/router";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import LiveTvIcon from "@mui/icons-material/LiveTv";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import LocalMoviesIcon from "@mui/icons-material/LocalMovies";
 
 function Header() {
-  const addClick = () => {
-    Router.push("/movies");
-  };
+  const router = useRouter();
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+  const [state, setState] = React.useState({
+    left: false,
+  });
 
   const darkTheme = createTheme({
     palette: {
@@ -35,9 +44,19 @@ function Header() {
     },
   });
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const toggleDrawer = (anchor: "left", open: boolean) => (
+    event: React.KeyboardEvent | React.MouseEvent
+  ) => {
+    if (
+      event.type === "keydown" &&
+      ((event as React.KeyboardEvent).key === "Tab" ||
+        (event as React.KeyboardEvent).key === "Shift")
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -45,31 +64,56 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-    Router.push("/login");
+    router.push("/login");
   };
+
+  const listItems = [
+    { name: "Home", url: "/", icon: <MovieCreationIcon /> },
+    { name: "Movies", url: "/movies", icon: <LocalMoviesIcon /> },
+    { name: "Series", url: "/series", icon: <LiveTvIcon /> },
+    { name: "My List", url: "/favorites", icon: <FavoriteIcon /> },
+  ];
 
   return (
     <ThemeProvider theme={darkTheme}>
       <AppBar position="fixed">
         <Toolbar>
-          <Tooltip title="Home">
-            <IconButton onClick={addClick} sx={{ mr: 1 }}>
-              <MovieCreationIcon fontSize="large" />
-            </IconButton>
-          </Tooltip>
-          <Typography
-            variant="h5"
-            noWrap
-            component="div"
+          <Box
             sx={{
               flexGrow: 1,
+              justifyContent: "flex-start",
               display: "flex",
-              justifyContent: "center",
-              mr: 1,
+              alignItems: "row",
             }}
           >
-            {/* Movies */}
-          </Typography>
+            <Box display={{ xs: "none", md: "block" }}>
+              <Tooltip title="Home">
+                <IconButton onClick={() => router.push("/")} sx={{ mr: 1 }}>
+                  <MovieCreationIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <Box display={{ md: "none" }} sx={{ mt: 1 }}>
+              <IconButton onClick={toggleDrawer("left", true)} sx={{ mr: 1 }}>
+                <MovieCreationIcon fontSize="large" />
+              </IconButton>
+            </Box>
+            <Box display={{ xs: "none", md: "block" }} sx={{ mt: 1 }}>
+              <IconButton onClick={() => router.push("/movies")} sx={{ mr: 1 }}>
+                <Typography> Movies </Typography>
+              </IconButton>
+              <IconButton onClick={() => router.push("/series")} sx={{ mr: 1 }}>
+                <Typography> Series </Typography>
+              </IconButton>
+              <IconButton
+                onClick={() => router.push("/favorites")}
+                sx={{ mr: 1 }}
+              >
+                <Typography> My List </Typography>
+              </IconButton>
+            </Box>
+          </Box>
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Profile">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -96,7 +140,6 @@ function Header() {
                 <Avatar sx={{ mr: 0.7 }} />
                 Profile
               </MenuItem>
-              {/* <MenuItem onClick={handleCloseUserMenu}>My account</MenuItem> */}
               <Divider />
               <MenuItem onClick={handleCloseUserMenu}>
                 <ListItemIcon>
@@ -108,6 +151,32 @@ function Header() {
           </Box>
         </Toolbar>
       </AppBar>
+      <Box>
+        <Drawer
+          sx={{ display: { md: "none" } }}
+          anchor="left"
+          open={state["left"]}
+          onClose={toggleDrawer("left", false)}
+        >
+          <List>
+            {listItems.map((item, index) => (
+              <ListItem
+                key={item.name}
+                disablePadding
+                onClick={() => {
+                  router.push(item.url);
+                  setState({ ...state, left: false });
+                }}
+              >
+                <ListItemButton>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+      </Box>
     </ThemeProvider>
   );
 }

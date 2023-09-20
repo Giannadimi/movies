@@ -8,7 +8,7 @@ export interface IMovie {
   id?: number;
   name_movie: string;
   description: string;
-  rating: number | null;
+  rating: number | undefined;
   photo_url: string;
   date_created: Date | null | string;
 }
